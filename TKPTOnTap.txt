@@ -1,0 +1,138 @@
+Nối 2 dataset theo hàng: result = pd.concat([df1, df2])
+Nối 2 dataset theo cột: result = pd.concat([df1, df2], axis=1)
+Kết hợp các dataset dựa trên một hoặc nhiều cột chung:
+	df1 = pd.DataFrame({'ID': [1, 2, 3], 'Name': ['A', 'B', 'C']})
+	df2 = pd.DataFrame({'ID': [2, 3, 4], 'Score': [85, 90, 95]})
+
+	result = pd.merge(df1, df2, on='ID', how='inner')
+	print(result)
+(how = left/right nếu nhóm bên trái hoặc phải, ineer: giao nhau, outer: tất cả)
+Kiểm tra dữ liệu thiếu:
+	print(df.isnull().sum())  # Tổng số giá trị bị thiếu trong từng cột
+Loại bỏ dòng/cột bị thiếu:
+	df = df.dropna()  # Loại bỏ các dòng có giá trị thiếu
+	df = df.dropna(axis=1)  # Loại bỏ các cột có giá trị thiếu
+Điền giá trị thay thế:
+	df['column_name'] = df['column_name'].fillna(value)  # Điền giá trị cụ thể
+	df['column_name'] = df['column_name'].fillna(df['column_name'].mean())  # Điền bằng giá trị trung bình
+Sắp xêp:
+	sorted_df = df.sort_values(by='Age', ascending=False)
+	print(sorted_df)
+Chọn cột:
+	print(df['column_name'])
+	print(df[['column1', 'column2']])  # Chọn nhiều cột
+Lọc theo giá trị cụ thể:
+	filtered = df[df['Name'].isin(['A', 'C'])]
+	print(filtered)
+Loại bỏ các dòng trùng nhau:
+	# Loại bỏ dòng trùng lặp
+	unique_df = df.drop_duplicates()
+	print(unique_df)
+Lọc dòng theo điều kiện:
+	filtered = df[df['Age'] > 30]  # Lọc các dòng có Age lớn hơn 30
+	print(filtered)
+Lọc theo nhiều điều kiện:
+	filtered = df[(df['Age'] > 30) & (df['Gender'] == 'Male')]
+	print(filtered)
+Thêm cột mới:
+	df['New_Column'] = df['Old_Column'] * 2
+Đổi tên cột:
+	df.rename(columns={'Old_Name': 'New_Name'}, inplace=True)
+Thay đổi kiểu dữ liệu:
+	df['column_name'] = df['column_name'].astype('int')
+Mô tả cơ bản:
+	print(df['column_name'].mean())  # Trung bình
+	print(df['column_name'].sum())  # Tổng
+	print(df['column_name'].max())  # Giá trị lớn nhất
+	print(df['column_name'].min())  # Giá trị nhỏ nhất
+Đếm số lượng:
+	print(df['column_name'].value_counts())
+Chuẩn hóa chuỗi:
+	df['column_name'] = df['column_name'].str.strip()  # Loại bỏ khoảng trắng
+	df['column_name'] = df['column_name'].str.lower()  # Chuyển thành chữ thường
+Tìm kiếm chuỗi:
+	filtered = df[df['column_name'].str.contains('keyword')]
+	print(filtered)
+Kiểm định chi bình phương:
+	import scipy.stats as stats
+	import pandas as pd
+
+	# Tạo bảng tần số
+	data = {'Male': [30, 10], 'Female': [20, 40]}
+	df = pd.DataFrame(data, index=['Yes', 'No'])
+
+	# Thực hiện kiểm định
+	chi2, p, dof, expected = stats.chi2_contingency(df)
+
+	print(f"Chi2: {chi2}")
+	print(f"P-value: {p}")
+Kiểm định thống kê (T-test):
+	from scipy.stats import ttest_ind
+
+	group1 = [10, 20, 30, 40]
+	group2 = [15, 25, 35, 45]
+
+	t_stat, p_value = ttest_ind(group1, group2)
+	print(f"T-statistic: {t_stat}, P-value: {p_value}")
+*Kiểm định ANOVA
+Dùng để kiểm tra sự khác biệt giữa trung bình của nhiều nhóm (>2).
+Ví dụ:
+from scipy.stats import f_oneway
+
+group1 = [10, 20, 30]
+group2 = [15, 25, 35]
+group3 = [20, 30, 40]
+
+f_stat, p_value = f_oneway(group1, group2, group3)
+print(f"F-statistic: {f_stat}, P-value: {p_value}")
+*Kiểm định Mann-Whitney U
+So sánh hai nhóm không giả định phân phối chuẩn.
+from scipy.stats import mannwhitneyu
+
+group1 = [10, 20, 30, 40]
+group2 = [15, 25, 35, 45]
+
+u_stat, p_value = mannwhitneyu(group1, group2)
+print(f"U-statistic: {u_stat}, P-value: {p_value}")
+**Hồi quy tuyến tính (Linear Regression):
+
+Dùng để mô hình hóa mối quan hệ tuyến tính giữa hai biến.
+Ví dụ:
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+
+# Dữ liệu
+X = np.array([1, 2, 3, 4, 5]).reshape(-1, 1)
+y = np.array([3, 4, 2, 5, 6])
+
+# Hồi quy
+model = LinearRegression()
+model.fit(X, y)
+y_pred = model.predict(X)
+
+print(f"Coefficients: {model.coef_}")
+print(f"Intercept: {model.intercept_}")
+
+# Vẽ biểu đồ
+plt.scatter(X, y, color='blue')
+plt.plot(X, y_pred, color='red')
+plt.show()
+**Hồi quy logistic (Logistic Regression):
+
+Dùng để dự đoán xác suất của một kết quả nhị phân (binary). 
+Ví dụ:
+from sklearn.linear_model import LogisticRegression
+from sklearn.datasets import load_iris
+
+data = load_iris()
+X = data.data[:, :2]  # Chỉ lấy 2 đặc trưng đầu
+y = (data.target == 0).astype(int)  # Phân loại nhị phân
+
+model = LogisticRegression()
+model.fit(X, y)
+
+print(f"Coefficients: {model.coef_}")
+
+
+
